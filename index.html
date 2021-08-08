@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+
+  <head>
+    <title>Project: Library</title>
+    <header id='topBar'>Library
+    </header>
+  </head>
+  
+  <body>
+    
+    <div id='start'></div>
+    
+  </body>
+  <footer>
+      <button id="addBookButton"></button>
+      <form id='bookForm'>
+        <button type='button' id='cancelFormButton'>X</button>
+        <label for='newTitle'>Title:</label><br>
+        <input type='text' id='newTitle' name='bTitle' placeholder="Title of the book"><br>
+    
+        <label for='newAuthor'>Author:</label><br>
+        <input type='text' id='newAuthor' name='bAuthor' placeholder="Author of the book"><br>
+          
+        <label for='newPages'>Pages:</label><br>
+        <input type='number' id='newPages' name='bPages' placeholder="How many pages"><br>
+          
+        <label for='newRead'>Have you read it ?:</label><br>
+        <select id='newRead'>
+            <option value='I swear to God I read it'>Yes</option>
+            <option value="Not going to lie, I didn't read it">No</option>
+          </select>
+          <button type='button' id='submitButton'>Add</button>
+        </form>
+  </footer>
+ 
+  <script src="script.js"></script>
+</html>
