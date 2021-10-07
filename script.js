@@ -8,7 +8,7 @@ const startingBook = new Book ("A Game of Thrones", "George R.R Martin", "694", 
 myLibrary.push(startingBook);
 new bookCard ("A Game of Thrones", "George R.R Martin", "694", "I swear to God I read it");
 
-function Book(title, author, pages, read){
+function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -18,15 +18,14 @@ function Book(title, author, pages, read){
 
 function bookCard(title, author, pages, read) {     // creating the book cards
     let newBook = document.createElement('div');
-    newBook.classList.add("card");
-    let newBookTitle = document.createElement("HEADER");
-    newBookTitle.classList.add("header");
-    let newBookAuthor = document.createElement("P");
-    let newBookPages = document.createElement("P");
-    let newBookRead = document.createElement("BUTTON");
-    newBookRead.classList.add("readButton");
-    let deleteButton = document.createElement("BUTTON");
-    deleteButton.classList.add('deleteButton')
+    newBook.classList.add("book-card");
+    let newBookTitle = document.createElement("h1");
+    let newBookAuthor = document.createElement("p");
+    let newBookPages = document.createElement("p");
+    let newBookRead = document.createElement("button");
+    newBookRead.classList.add("read-button");
+    let deleteButton = document.createElement("button");
+    deleteButton.classList.add('delete-button')
     newBookRead.addEventListener('click', () => {
         if (newBookRead.textContent == "I swear to God I read it") {
             newBookRead.textContent = "Not going to lie, I didn't read it";
@@ -43,7 +42,6 @@ function bookCard(title, author, pages, read) {     // creating the book cards
     newBookAuthor.textContent = 'by ' + author;
     newBookPages.textContent = pages + " pages";
     newBookRead.textContent = read;
-    deleteButton.textContent = 'Remove book';
     newBook.appendChild(newBookTitle);
     newBook.appendChild(newBookAuthor);
     newBook.appendChild(newBookPages);

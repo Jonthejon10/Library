@@ -1,65 +1,99 @@
+@font-face {
+    font-family: vibes;
+    src: url('./vibes.ttf');
+}
+
 html {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: vibes;
+    background-color: #181a1b;
+    color: white;
+    min-height: 100vh;
 }
 
 body {
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
     margin: 0;
 }
 
-#topBar {
-    color: white;
-    background-color: #beb9b9;
+.top-bar {
+    background-color: #515E63;
+    text-align: center;
+}
+
+.top-bar h1 {
+    font-size: 55px;
+}
+
+.container {
+/*     min-height: inherit;
+ */    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #515E63;
+    border-radius: 5px;
+    height: 400px;
+    width: 350px;
+    padding: 10px;
+}
+
+.book-card h1 {
+    color: #F5E8C7;
     font-size: 40px;
-    text-align: center;
-    height: 50px;
-}
-
-.card {
-    float: left;
-    margin-top: 100px;
-    margin-left: 50px;
-    height: 300px;
-    width: 250px;
-    padding-top: 80px;
-    text-align: center;
-    border: 1px black solid;
-}
-
-.header {
-    font-size: 20px;
     font-weight: bold;
+}
+
+.book-card p {
+    font-size: 30px;
+}
+
+.read-button {
+    width: 230px;
+    height: 60px;
+    border: none;
     background-color: transparent;
-    color: black;
+    color: #C1CFC0;
+    cursor: pointer;
+    font-family: vibes;
+    font-size: 25px
 }
 
-.readButton {
-    width: 190px;
-    font-size: 12px;
-    margin-top: 90px;
-    border: 1px solid black;
-    background-color: white;
-    border-radius: 5px;
+.not-read-button {
+    width: 270px;
+    height: 60px;
+    border: none;
+    background-color: transparent;
+    color: #BD4B4B;
+    cursor: pointer;
+    font-family: vibes;
+    font-size: 25px
 }
 
-.deleteButton {
-    width: 190px;
-    font-size: 15px;
-    margin-top: 25px;
-    background-color: #beb9b9;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-#addBookButton {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    height: 99px;
-    width: 70px;
-    float: right;
-    background-image: url("add.png");
+.delete-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: url('./delete.png') no-repeat center;
     background-size: cover;
-    background-color: transparent;
+    cursor: pointer;
+}
+
+.add-book-button {
+    height: 64px;
+    width: 64px;
+    background-image: url("add.png");
+    background-position: center;
+    background-size: cover;
+    background-color: #515E63;
     border: none;
     cursor: pointer;
 }
