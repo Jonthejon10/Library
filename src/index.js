@@ -1,3 +1,6 @@
+import { initializeApp } from "firebase/app"
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc} from "firebase/firestore"
+
 const container = document.querySelector('#container')
 const addBookButton = document.querySelector('#add_book_button')
 let formTitle = document.querySelector('#title')
@@ -7,20 +10,10 @@ let readStatus = document.querySelector('#read')
 const modalContainer = document.querySelector('#modal_container')
 const submitButton = document.querySelector('#submit_book')
 const closeModalBtn = document.querySelector('#close_modal')
+const gitBtn = document.querySelector('#github')
+const myLibrary = []
 
-const myLibrary = [];
-
-const changeStatus = (btn, currStatus) => {
-    if (btn.textContent === 'I swear to God I read it') {
-        btn.textContent = "Not going to lie, I didn't read it"
-    } else if (btn.textContent === "Not going to lie, I didn't read it") {
-        btn.textContent = "I swear to God I read it";
-    }
-    currStatus = btn.textContent
-    checkForStatus(btn)
-}
-
-const checkForStatus = (btn) => {
+const updateStatus = (btn) => {
     if (btn.textContent === 'I swear to God I read it') {
         btn.classList.add("read-button")
         if (btn.classList.contains('not-read-button')) {
@@ -32,10 +25,38 @@ const checkForStatus = (btn) => {
     }
 }
 
+const updateDbStatus = async (currBook, btnStatus) => {
+    const querySnapshot = await getDocs(collection(db, 'books'))
+    querySnapshot.forEach((currDoc) => {
+        if (currDoc.id === currBook.title) {
+            const bookRef = doc(db, 'books', currBook.title)
+            setDoc(bookRef, {read: btnStatus}, {merge: true})
+        }
+    })
+}
+
+const changeStatus = (btn, currStatus, currBook) => {
+    if (btn.textContent === 'I swear to God I read it') {
+        btn.textContent = "Not going to lie, I didn't read it"
+    } else if (btn.textContent === "Not going to lie, I didn't read it") {
+        btn.textContent = "I swear to God I read it";
+    }
+    currStatus = btn.textContent
+    updateStatus(btn)
+    updateDbStatus(currBook, btn.textContent)
+}
+
+
 const deleteBook = (div, book) => {
     container.removeChild(div)
     const bookIndex = myLibrary.indexOf(book)
     myLibrary.splice(bookIndex, 1)
+    deleteBookFromDb(book)
+}
+
+const deleteBookFromDb = async (currBook) => {
+    const bookRef = doc(db, 'books', currBook.title)
+    await deleteDoc(bookRef)
 }
 
 const Book = (title, author, pages, read) => {
@@ -64,9 +85,9 @@ const Book = (title, author, pages, read) => {
             
             let readButton = document.createElement("button")
             readButton.textContent = read
-            checkForStatus(readButton)
+            updateStatus(readButton)
             readButton.addEventListener('click', () => {
-                changeStatus(readButton, read)
+                changeStatus(readButton, read, this)
             })
             
             let deleteButton = document.createElement("button")
@@ -114,7 +135,7 @@ const validateForm = () => {
 
 addBookButton.addEventListener('click', () => {
     modalContainer.classList.add('show')
-});
+})
 
 closeModalBtn.addEventListener('click', () => {
     modalContainer.classList.remove('show')
@@ -125,6 +146,7 @@ submitButton.addEventListener('click', () => {
         displayBook()
         clearForm()
         modalContainer.classList.remove('show')
+        addToDb()
     }
 })
 
@@ -132,6 +154,42 @@ const openInNewTab = (url) => {
     window.open(url, '_blank').focus();
 }
 
-const startingBook = Book("A Game of Thrones", "George R.R Martin", "694", "I swear to God I read it")
-startingBook.addToLibrary()
-startingBook.createBookCard()
+gitBtn.addEventListener('click', () => {openInNewTab('https://github.com/Jonthejon10')})
+
+
+const firebaseApp = initializeApp({
+    apiKey: "AIzaSyB0oyudgN_dMVBjsHGUxOjPdI1J3Calwuo",
+    authDomain: "library-45b28.firebaseapp.com",
+    projectId: "library-45b28",
+    storageBucket: "library-45b28.appspot.com",
+    messagingSenderId: "1021929217919",
+    appId: "1:1021929217919:web:cb0aa921a29b5434bb444a"
+})
+
+const db = getFirestore()
+
+const addToDb = async () => {
+    try {
+        for (let book of myLibrary) {
+            await setDoc(doc(db, 'books', book.title), {
+                title: book.title,
+                author: book.author,
+                pages: book.pages,
+                read: book.read
+            })
+        }
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+const getBooksFromDb = async () => {
+    const querySnapshot = await getDocs(collection(db, 'books'))
+    querySnapshot.forEach((doc) => {
+        const storedBook = Book(doc.data().title, doc.data().author, doc.data().pages, doc.data().read)
+        storedBook.addToLibrary()
+        storedBook.createBookCard()
+    })
+}
+
+getBooksFromDb()
