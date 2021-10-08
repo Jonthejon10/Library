@@ -15,6 +15,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
+    justify-content: space-between;
 }
 
 .top-bar {
@@ -27,14 +28,14 @@ body {
 }
 
 .container {
-/*     min-height: inherit;
- */    display: flex;
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: 50px;
+    flex-wrap: wrap;
 }
 
 .book-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,6 +45,9 @@ body {
     height: 400px;
     width: 350px;
     padding: 10px;
+    margin-left: 50px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .book-card h1 {
@@ -67,6 +71,10 @@ body {
     font-size: 25px
 }
 
+.read-button:hover {
+    color: #BD4B4B;
+}
+
 .not-read-button {
     width: 270px;
     height: 60px;
@@ -78,9 +86,16 @@ body {
     font-size: 25px
 }
 
+.not-read-button:hover {
+    color:#C1CFC0;
+}
+
 .delete-button {
-    width: 40px;
-    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35px;
+    height: 35px;
     border: none;
     background: url('./delete.png') no-repeat center;
     background-size: cover;
@@ -90,56 +105,127 @@ body {
 .add-book-button {
     height: 64px;
     width: 64px;
+    margin-left: 50px;
+    margin-top: 15px;
     background-image: url("add.png");
     background-position: center;
     background-size: cover;
-    background-color: #515E63;
+    background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-#bookForm {
-    display: none;
+.modal-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    width: 320px;
-    height: 300px;
-    padding-top: 50px;
-    font-size: 25px;
-    bottom: 0;
-    right: 10px;
-    border: 3px solid #beb9b9;
-    background-color: white;
-    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: opacity 0.3s ease;
 }
 
-#cancelFormButton {
+.modal-container.show {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.modal {
+    position: relative;
+    background-color: #292c2e;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.close-modal {
     position: absolute;
     top: 0;
-    right: 0;
-    height: 35px;
-    width: 35px;
+    left: 0;
+    height: 45px;
+    width: 45px;
     border: none;
     cursor: pointer;
-    font-size: 15px;
+    background: url('./delete.png') no-repeat center;
+    background-size: cover;
 }
 
-#newTitle, #newAuthor, #newPages, #newRead {
-    font-size: 16px;
-    background-color: #e9e6e6;
-    border: 1px solid #beb9b9
-}
-
-#submitButton {
-    height: 30px;
-    width: 70px;
-    margin-left: 0px;
-    border-radius: 5px;
-    background-color: #e9e6e6;
+.modal input {
     text-align: center;
-    font-size: 15px;
-    border: 1px solid black;
+    font-size: 25px;
+    background-color: #515E63;
+    color: white;
+    padding: 25px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 45px;
 }
 
-#submitButton:hover {
-    background-color: #beb9b9;
+.modal select {
+    background-color: #515E63;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.last-elements {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 45px;
+}
+
+.submit-book-button {
+    margin-left: 40px;
+    height: 45px;
+    width: 60px;
+    border: none;
+    cursor: pointer;
+    background: url('./submit.png');
+    background-position: center;
+    background-size: cover;
+}
+
+footer {
+    width: 100vw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #515E63;
+}
+
+.github-button {
+    width: 30px;
+    height: 30px;
+    background: url('./github.png');
+    background-position: center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    margin-left: 12px;
+}
+
+.github-button:hover {
+    width: 35px;
+    height: 35px;
 }

@@ -1,109 +1,137 @@
+const container = document.querySelector('#container')
+const addBookButton = document.querySelector('#add_book_button')
+let formTitle = document.querySelector('#title')
+let formAuthor = document.querySelector('#author')
+let formPages = document.querySelector('#pages')
+let readStatus = document.querySelector('#read')
+const modalContainer = document.querySelector('#modal_container')
+const submitButton = document.querySelector('#submit_book')
+const closeModalBtn = document.querySelector('#close_modal')
+
 const myLibrary = [];
-const addBookButton = document.getElementById('addBookButton');
-const submitButton = document.getElementById('submitButton');
-const noForm = document.getElementById('cancelFormButton');
-let rmvUserBook;
 
-const startingBook = new Book ("A Game of Thrones", "George R.R Martin", "694", "I swear to God I read it");
-myLibrary.push(startingBook);
-new bookCard ("A Game of Thrones", "George R.R Martin", "694", "I swear to God I read it");
+const changeStatus = (btn, currStatus) => {
+    if (btn.textContent === 'I swear to God I read it') {
+        btn.textContent = "Not going to lie, I didn't read it"
+    } else if (btn.textContent === "Not going to lie, I didn't read it") {
+        btn.textContent = "I swear to God I read it";
+    }
+    currStatus = btn.textContent
+    checkForStatus(btn)
+}
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-};
+const checkForStatus = (btn) => {
+    if (btn.textContent === 'I swear to God I read it') {
+        btn.classList.add("read-button")
+        if (btn.classList.contains('not-read-button')) {
+            btn.classList.remove('not-read-button')
+        }
+    } else if (btn.textContent === "Not going to lie, I didn't read it") {
+        btn.classList.remove('read-button')
+        btn.classList.add('not-read-button')
+    }
+}
 
+const deleteBook = (div, book) => {
+    container.removeChild(div)
+    const bookIndex = myLibrary.indexOf(book)
+    myLibrary.splice(bookIndex, 1)
+}
 
-function bookCard(title, author, pages, read) {     // creating the book cards
-    let newBook = document.createElement('div');
-    newBook.classList.add("book-card");
-    let newBookTitle = document.createElement("h1");
-    let newBookAuthor = document.createElement("p");
-    let newBookPages = document.createElement("p");
-    let newBookRead = document.createElement("button");
-    newBookRead.classList.add("read-button");
-    let deleteButton = document.createElement("button");
-    deleteButton.classList.add('delete-button')
-    newBookRead.addEventListener('click', () => {
-        if (newBookRead.textContent == "I swear to God I read it") {
-            newBookRead.textContent = "Not going to lie, I didn't read it";
-        } else if (newBookRead.textContent == "Not going to lie, I didn't read it") {
-            newBookRead.textContent = "I swear to God I read it";
-        };
-    });
-    deleteButton.addEventListener('click', () => {
-        newBook.remove();
-        const bookIndex = myLibrary.indexOf(rmvUserBook);
-        myLibrary.splice(bookIndex, 1);
-    });
-    newBookTitle.textContent = title;
-    newBookAuthor.textContent = 'by ' + author;
-    newBookPages.textContent = pages + " pages";
-    newBookRead.textContent = read;
-    newBook.appendChild(newBookTitle);
-    newBook.appendChild(newBookAuthor);
-    newBook.appendChild(newBookPages);
-    newBook.appendChild(newBookRead);
-    newBook.appendChild(deleteButton);
-    let currentDiv = document.getElementById('start');
-    document.body.insertBefore(newBook, currentDiv);
-};
+const Book = (title, author, pages, read) => {
+    return {
+        title: title,
+        author: author,
+        pages: pages,
+        read: read,
 
-function addBookToLibrary() {       // adding the books to library
-    let bookTitle = document.getElementById("newTitle").value;
-    let bookAuthor = document.getElementById('newAuthor').value;
-    let bookPages = document.getElementById('newPages').value;
-    let bookRead = document.getElementById('newRead').value;
-    let userBook = new Book(bookTitle, bookAuthor, bookPages, bookRead);
-    rmvUserBook = userBook;
-    myLibrary.push(userBook);
-    new bookCard(userBook.title, userBook.author, userBook.pages, userBook.read)
-};
+        addToLibrary() {
+            myLibrary.push(this)
+        },
 
+        createBookCard() {
+            let newBook = document.createElement('div')
+            newBook.classList.add("book-card");
+            
+            let bookTitle = document.createElement("h1")
+            bookTitle.textContent = title + ','
+            
+            let bookAuthor = document.createElement("p")
+            bookAuthor.textContent = 'by ' + author + ','
+            
+            let bookPages = document.createElement("p")
+            bookPages.textContent = pages + ' pages'
+            
+            let readButton = document.createElement("button")
+            readButton.textContent = read
+            checkForStatus(readButton)
+            readButton.addEventListener('click', () => {
+                changeStatus(readButton, read)
+            })
+            
+            let deleteButton = document.createElement("button")
+            deleteButton.addEventListener('click', () => {
+                deleteBook(newBook, this)
+            })
+            deleteButton.classList.add('delete-button')
 
+            newBook.appendChild(bookTitle)
+            newBook.appendChild(bookAuthor)
+            newBook.appendChild(bookPages)
+            newBook.appendChild(deleteButton)
+            newBook.appendChild(readButton)
+            container.insertBefore(newBook, addBookButton)
+        }
+    }
+}
 
-function showForm() {
-    document.getElementById('bookForm').style.display = 'block';
-};
+const displayBook = () => {
+    const userBook = Book(formTitle.value, formAuthor.value, formPages.value, readStatus.value)
+    userBook.addToLibrary()
+    userBook.createBookCard()
+}
 
-function hideForm() {
-    document.getElementById("bookForm").style.display = "none";
-};
+const clearForm = () => {
+    formTitle.value = ''
+    formAuthor.value = ''
+    formPages.value = ''
+}
 
-addBookButton.addEventListener('click', showForm);
+const validateForm = () => {
+    if (formTitle.value === "") {
+      alert("Book title must be filled out")
+      return false
+    } else if(formAuthor.value === "") {
+        alert("Book author must be filled out")
+        return false
+    } else if(formPages.value === "") {
+        alert("Book pages must be filled out")
+        return false
+    } else {
+        return true
+  }
+}
 
-noForm.addEventListener('click', hideForm)
-
-function validateForm() {
-    let formTitle = document.forms["bookForm"]["bTitle"].value;
-    let formAuthor = document.forms["bookForm"]["bAuthor"].value;
-    let formPages = document.forms["bookForm"]["bPages"].value;
-    if (formTitle == "") {
-      alert("Book title must be filled out");
-      return false;
-    } else if(formAuthor == "") {
-        alert("Book author must be filled out");
-        return false;
-    } else if(formPages == "") {
-        alert("Book pages must be filled out");
-        return false;
-  };
-};
-
-function clearForm (){
-    document.forms["bookForm"]["bTitle"].value = '';
-    document.forms["bookForm"]["bAuthor"].value = '';
-    document.forms["bookForm"]["bPages"].value = '';
-};
-
-submitButton.addEventListener('click', () => {
-    if (validateForm() !== false) {
-        addBookToLibrary();
-        clearForm();
-        hideForm();
-    };
+addBookButton.addEventListener('click', () => {
+    modalContainer.classList.add('show')
 });
 
+closeModalBtn.addEventListener('click', () => {
+    modalContainer.classList.remove('show')
+})
 
+submitButton.addEventListener('click', () => {
+    if (validateForm() === true) {
+        displayBook()
+        clearForm()
+        modalContainer.classList.remove('show')
+    }
+})
+
+const openInNewTab = (url) => {
+    window.open(url, '_blank').focus();
+}
+
+const startingBook = Book("A Game of Thrones", "George R.R Martin", "694", "I swear to God I read it")
+startingBook.addToLibrary()
+startingBook.createBookCard()

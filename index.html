@@ -9,6 +9,7 @@
   </head>
   
   <body>
+
     <header class='top-bar'>
       
       <h1>Library</h1>
@@ -16,31 +17,34 @@
 
     <div id='container' class='container'>
       
-      <button id="addBookButton" class='add-book-button'></button>
-      <form id='bookForm'>
-<!--         <button type='button' id='cancelFormButton'>X</button>
-        <label for='newTitle'>Title:</label><br>
-        <input type='text' id='newTitle' name='bTitle' placeholder="Title of the book"><br>
-      
-        <label for='newAuthor'>Author:</label><br>
-        <input type='text' id='newAuthor' name='bAuthor' placeholder="Author of the book"><br>
-      
-        <label for='newPages'>Pages:</label><br>
-        <input type='number' id='newPages' name='bPages' placeholder="How many pages"><br>
-      
-        <label for='newRead'>Have you read it ?:</label><br>
-        <select id='newRead'>
-          <option value='I swear to God I read it'>Yes</option>
-          <option value="Not going to lie, I didn't read it">No</option>
-        </select> -->
-        <button type='button' id='submitButton'>Add</button>
-      </form>
+      <button id="add_book_button" class='add-book-button'></button>
+      <div id='modal_container'class="modal-container">
+        <div class='modal'>
+          <form id='book_form' class='book-form'>
+            <button type='button' id='close_modal' class='close-modal'></button>
+            
+            <input type='text' id='title' placeholder="Title of the book"><br>
+          
+            <input type='text' id='author' placeholder="Author of the book"><br>
+          
+            <input type='number' id='pages' placeholder="How many pages"><br>
+            <div class='last-elements'>
+              <select id='read'>
+                <option value='I swear to God I read it'>Yes, I read it</option>
+                <option value="Not going to lie, I didn't read it">No, not yet</option>
+              </select>
+              <button type='button' id='submit_book' class='submit-book-button'></button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     
   </body>
 
   <footer>
-      
+      <p>© Jonthejon10, 2021</p>
+      <button id='github' class='github-button' onclick='openInNewTab("https://github.com/Jonthejon10")'></button>
   </footer>
  
   <script src="script.js"></script>
